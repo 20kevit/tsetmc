@@ -98,7 +98,20 @@ class Ticker:
     def holders(self):
         return today.holders(self.num_id)
     
+    def statistics(self):
+        return Get.statistics(self.num_id)
     
+    def trade_history(self):
+        return Get.trade_history(self.num_id)
+    
+    def adjust_history(self):
+        return Get.adjust_history(self.num_id)
+    
+    def status_changes(self):
+        return Get.status_changes(self.num_id)
+    
+    def ID(self):
+        return Get.ID(self.num_id)
         
 
 class order:
