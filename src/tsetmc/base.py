@@ -101,8 +101,8 @@ class Ticker:
     def statistics(self):
         return Get.statistics(self.num_id)
     
-    def trade_history(self):
-        return Get.trade_history(self.num_id)
+    def trade_history(self, adjust=False):
+        return Get.trade_history(self.num_id, adjust=adjust)
     
     def adjust_history(self):
         return Get.adjust_history(self.num_id)
