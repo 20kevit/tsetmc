@@ -115,54 +115,6 @@ def trades(num_id: int | str) -> pd.DataFrame:
 
     return pd.DataFrame(data).transpose()
 
-def real_legal(num_id: int | str) -> dict:
-    response = get(__BASE_URL__ + f"tsev2/data/clienttype.aspx?i={num_id}")
-    
-    data = response.text.split(";")
-
-    result = {}
-    for row in data:
-        values = row.split(",")
-        time = values[0]
-        year = int(time[:4])
-        month = int(time[4:6])
-        day = int(time[-2:])
-        time = datetime.date(year, month, day)
-
-        result[time] = {
-            "count": {
-                "buy": {
-                    "real": int(values[1]),
-                    "legal": int(values[2])
-                },
-                "sell": {
-                    "real": int(values[3]),
-                    "legal": int(values[4])
-                }
-            },
-            "volume": {
-                "buy": {
-                    "real": int(values[5]),
-                    "legal": int(values[6])
-                },
-                "sell": {
-                    "real": int(values[7]),
-                    "legal": int(values[8])
-                }
-            },
-            "value": {
-                "buy": {
-                    "real": int(values[9]),
-                    "legal": int(values[10])
-                },
-                "sell": {
-                    "real": int(values[11]),
-                    "legal": int(values[12])
-                }
-            }
-        }
-
-    return result
 
 def holders(code: str) -> list[dict]:
     page = get(__BASE_URL__ + f"Loader.aspx?Partree=15131T&c={code}")
