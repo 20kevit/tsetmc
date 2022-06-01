@@ -93,7 +93,7 @@ class Ticker:
         return today.trades(self.num_id)
     
     def real_legal(self):
-        return today.real_legal(self.num_id)
+        return Get.real_legal(self.num_id)
     
     def holders(self):
         return today.holders(self.num_id)
