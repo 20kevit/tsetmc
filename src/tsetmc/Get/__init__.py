@@ -341,7 +341,7 @@ def adjust_history(num_id: int | str) -> pd.DataFrame:
         __BASE_URL__ + f"Loader.aspx?Partree=15131G&i={num_id}")
     if "Error" in page.text:
             print("Internal Server Error")
-            return
+            return pd.DataFrame(columns=["before", "after", "rate"])
     soup = BeautifulSoup(page.content, "html.parser")
     table = soup.find(name="tbody")
     rows = table.find_all(name="tr")
