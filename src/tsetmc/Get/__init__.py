@@ -486,3 +486,53 @@ def all_tickers(original=False, stock=True, stock_rights=True, other=False) -> p
     if original:
         df.columns = [td.text for td in rows[0].find_all(name="td")]      
     return df
+
+
+def real_legal(num_id: int | str) -> dict:
+    response = get(__BASE_URL__ + f"tsev2/data/clienttype.aspx?i={num_id}")
+    
+    data = response.text.split(";")
+
+    result = {}
+    for row in data:
+        values = row.split(",")
+        time = values[0]
+        year = int(time[:4])
+        month = int(time[4:6])
+        day = int(time[-2:])
+        time = datetime.date(year, month, day)
+
+        result[time] = {
+            "count": {
+                "buy": {
+                    "real": int(values[1]),
+                    "legal": int(values[2])
+                },
+                "sell": {
+                    "real": int(values[3]),
+                    "legal": int(values[4])
+                }
+            },
+            "volume": {
+                "buy": {
+                    "real": int(values[5]),
+                    "legal": int(values[6])
+                },
+                "sell": {
+                    "real": int(values[7]),
+                    "legal": int(values[8])
+                }
+            },
+            "value": {
+                "buy": {
+                    "real": int(values[9]),
+                    "legal": int(values[10])
+                },
+                "sell": {
+                    "real": int(values[11]),
+                    "legal": int(values[12])
+                }
+            }
+        }
+
+    return result
