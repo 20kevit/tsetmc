@@ -536,3 +536,36 @@ def real_legal(num_id: int | str) -> dict:
         }
 
     return result
+
+def market_watch(original=False):
+    response = get("http://members.tsetmc.com/tsev2/excel/MarketWatchPlus.aspx?d=0")
+    data = pd.read_excel(response.content)
+    df = pd.DataFrame(data.iloc[2:].values, columns=data.iloc[1].values)
+    if original:
+        return df
+    
+    columns = {
+        'نماد': "symbol",
+        'نام': "name",
+        'تعداد': "count",
+        'حجم': "volume",
+        'ارزش': "value",
+        'دیروز': "yesterday",
+        'اولین': "first",
+        'آخرین معامله - مقدار': "last",
+        'آخرین معامله - تغییر': "last_change",
+        'آخرین معامله - درصد': "last_percent",
+        'قیمت پایانی - مقدار': "close",
+        'قیمت پایانی - تغییر': "close_change",
+        'قیمت پایانی - درصد': "close_percent",
+        'کمترین': "low",
+        'بیشترین': "high",
+        'خرید - تعداد': "buy_count",
+        'خرید - حجم': "buy_volume",
+        'خرید - قیمت': "buy_price",
+        'فروش - قیمت': "sell_price",
+        'فروش - حجم': "sell_volume",
+        'فروش - تعداد': "sell_count"
+    }
+    df = df.rename(columns=columns)
+    return df
